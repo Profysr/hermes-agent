@@ -66,7 +66,9 @@ describe('FloatingPanes (live DOM)', () => {
     // setPointerCapture / releasePointerCapture don't exist in jsdom.
     Element.prototype.setPointerCapture = vi.fn()
     Element.prototype.releasePointerCapture = vi.fn()
-  })
+    // The first run cold-transforms the whole registry + pane graph; on a loaded runner that alone
+    // exceeds the 10 s default hook timeout. Later runs hit the transform cache.
+  }, 60_000)
 
   afterEach(() => {
     mount.unmount()
